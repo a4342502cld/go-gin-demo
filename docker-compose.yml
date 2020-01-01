@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mysql:
+    container_name: mysql_5.7
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: gomysql
+      MYSQL_ROOT_PASSWORD: xxx
+      MYSQL_ROOT_HOST: '%'
+    ports:
+    - 3306:3306
+    restart: always
+    volumes:
+    - /Users/xxx/Developer/golang/docker_dir/mysql/log:/var/log/mysql
+    - /Users/xxx/Developer/golang/docker_dir/mysql/data:/var/lib/mysql
+    - /Users/xxx/Developer/golang/docker_dir/mysql/conf:/etc/mysql
+
+  app:
+    restart: always
+    image: go-gin-demo
+    container_name: go-gin-demo
+    ports:
+    - 9090:9090
+    # 指定容器需要挂载文件
+    volumes:
+    - /Users/xxx/Developer/golang/docker_dir/go-gin-demo/logs:/var/logs
+
+    links:
+      - mysql:mysql_5.7
